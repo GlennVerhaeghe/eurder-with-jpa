@@ -7,15 +7,15 @@ import com.switchfully.order.domain.items.ItemRepository;
 import com.switchfully.order.domain.orders.Order;
 import com.switchfully.order.domain.orders.OrderRepository;
 import com.switchfully.order.domain.orders.orderitems.OrderItem;
+import com.switchfully.order.domain.orders.orderitems.events.OrderItemCreatedEvent;
 import com.switchfully.order.infrastructure.exceptions.EntityNotFoundException;
 import com.switchfully.order.infrastructure.exceptions.EntityNotValidException;
 import com.switchfully.order.infrastructure.exceptions.NotAuthorizedException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.inject.Inject;
-import javax.inject.Named;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,16 +32,18 @@ public class OrderService {
     private final ItemRepository itemRepository;
     private final OrderRepository orderRepository;
     private final OrderValidator orderValidator;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Autowired
     public OrderService(CustomerRepository customerRepository,
                         ItemRepository itemRepository,
                         OrderRepository orderRepository,
-                        OrderValidator orderValidator) {
+                        OrderValidator orderValidator, ApplicationEventPublisher eventPublisher) {
         this.customerRepository = customerRepository;
         this.itemRepository = itemRepository;
         this.orderRepository = orderRepository;
         this.orderValidator = orderValidator;
+        this.eventPublisher = eventPublisher;
     }
 
     public Order createOrder(Order order) {
@@ -52,27 +54,29 @@ public class OrderService {
     }
 
     public List<Order> getOrdersForCustomer(UUID customerId) {
-        return orderRepository.getOrdersForCustomer(customerId);
+        return orderRepository.getAllByCustomerId(customerId);
     }
 
     public Order reorderOrder(UUID orderId) {
-        Order orderToReorder = orderRepository.get(orderId);
+        Order orderToReorder = orderRepository.getOne(orderId);
         assertCustomerIsOwnerOfOrderToReorder(orderId, orderToReorder);
-        return orderRepository.save(order()
+        Order newOrder = order()
                 .withCustomerId(orderToReorder.getCustomerId())
                 .withOrderItems(copyOrderItemsWithRecentPrice(orderToReorder.getOrderItems()))
-                .build());
+                .build();
+        newOrder.getOrderItems().forEach(orderItem -> eventPublisher.publishEvent(new OrderItemCreatedEvent(orderItem)));
+        return orderRepository.save(newOrder);
     }
 
     public List<Order> getAllOrders(boolean onlyIncludeShippableToday) {
         if (onlyIncludeShippableToday) {
             return getOrdersOnlyContainingOrderItemsShippingToday();
         }
-        return new ArrayList<>(orderRepository.getAll().values());
+        return new ArrayList<>(orderRepository.findAll());
     }
 
     private List<Order> getOrdersOnlyContainingOrderItemsShippingToday() {
-        return orderRepository.getAll().values().stream()
+        return orderRepository.findAll().stream()
                 .map(order -> order()
                         .withCustomerId(order.getCustomerId())
                         .withId(order.getId())

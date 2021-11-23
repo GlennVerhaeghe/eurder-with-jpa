@@ -5,19 +5,21 @@ import com.switchfully.order.api.customers.emails.EmailMapper;
 import com.switchfully.order.api.customers.phonenumbers.PhoneNumberMapper;
 import com.switchfully.order.domain.customers.Customer;
 import com.switchfully.order.infrastructure.dto.Mapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.UUID;
 
-@Named
+@Component
 public class CustomerMapper extends Mapper<CustomerDto, Customer> {
 
     private final AddressMapper addressMapper;
     private final EmailMapper emailMapper;
     private final PhoneNumberMapper phoneNumberMapper;
 
-    @Inject
+    @Autowired
     public CustomerMapper(AddressMapper addressMapper, EmailMapper emailMapper, PhoneNumberMapper phoneNumberMapper) {
         this.addressMapper = addressMapper;
         this.emailMapper = emailMapper;

@@ -1,7 +1,9 @@
 package com.switchfully.order.service.items;
 
 import com.switchfully.order.domain.orders.orderitems.events.OrderItemCreatedEvent;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
+import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -9,11 +11,11 @@ import javax.inject.Named;
 
 public class ItemEventHandler {
 
-    @Named
+    @Component
     public static class OrderItemCreatedEventListener implements ApplicationListener<OrderItemCreatedEvent> {
-        private ItemService itemService;
+        private final ItemService itemService;
 
-        @Inject
+        @Autowired
         public OrderItemCreatedEventListener(ItemService itemService) {
             this.itemService = itemService;
         }

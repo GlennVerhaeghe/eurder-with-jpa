@@ -10,6 +10,7 @@ import com.switchfully.order.api.orders.dtos.reports.SingleOrderReportDto;
 import com.switchfully.order.domain.customers.addresses.Address;
 import com.switchfully.order.domain.orders.Order;
 import com.switchfully.order.service.customers.CustomerService;
+import org.springframework.stereotype.Component;
 
 import javax.inject.Named;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
 
 import static com.switchfully.order.domain.orders.Order.OrderBuilder.order;
 
-@Named
+@Component
 public class OrderMapper {
 
     private final OrderItemMapper orderItemMapper;

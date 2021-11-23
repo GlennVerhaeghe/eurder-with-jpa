@@ -2,6 +2,7 @@ package com.switchfully.order.domain.orders;
 
 import com.switchfully.order.domain.Repository;
 import com.switchfully.order.domain.orders.orderitems.events.OrderItemCreatedEvent;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 
 import javax.inject.Inject;
@@ -10,12 +11,12 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Named
+@org.springframework.stereotype.Repository
 public class OrderRepository extends Repository<Order, OrderDatabase> {
 
-    private ApplicationEventPublisher eventPublisher;
+    private final ApplicationEventPublisher eventPublisher;
 
-    @Inject
+    @Autowired
     public OrderRepository(OrderDatabase database, ApplicationEventPublisher eventPublisher) {
         super(database);
         this.eventPublisher = eventPublisher;

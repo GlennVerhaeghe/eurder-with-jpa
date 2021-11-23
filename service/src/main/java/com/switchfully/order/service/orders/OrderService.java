@@ -10,6 +10,9 @@ import com.switchfully.order.domain.orders.orderitems.OrderItem;
 import com.switchfully.order.infrastructure.exceptions.EntityNotFoundException;
 import com.switchfully.order.infrastructure.exceptions.EntityNotValidException;
 import com.switchfully.order.infrastructure.exceptions.NotAuthorizedException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -21,7 +24,8 @@ import java.util.stream.Collectors;
 
 import static com.switchfully.order.domain.orders.Order.OrderBuilder.order;
 
-@Named
+@Service
+@Transactional
 public class OrderService {
 
     private final CustomerRepository customerRepository;
@@ -29,7 +33,7 @@ public class OrderService {
     private final OrderRepository orderRepository;
     private final OrderValidator orderValidator;
 
-    @Inject
+    @Autowired
     public OrderService(CustomerRepository customerRepository,
                         ItemRepository itemRepository,
                         OrderRepository orderRepository,

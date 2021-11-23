@@ -5,6 +5,7 @@ import com.switchfully.order.api.orders.dtos.OrderCreationDto;
 import com.switchfully.order.api.orders.dtos.OrderDto;
 import com.switchfully.order.api.orders.dtos.reports.OrdersReportDto;
 import com.switchfully.order.service.orders.OrderService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +23,7 @@ public class OrderController {
     private final OrderService orderService;
     private final OrderMapper orderMapper;
 
-    @Inject
+    @Autowired
     public OrderController(OrderService orderService, OrderMapper orderMapper) {
         this.orderService = orderService;
         this.orderMapper = orderMapper;

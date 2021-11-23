@@ -5,16 +5,35 @@ import com.switchfully.order.domain.customers.addresses.Address;
 import com.switchfully.order.domain.customers.emails.Email;
 import com.switchfully.order.domain.customers.phonenumbers.PhoneNumber;
 import com.switchfully.order.infrastructure.builder.Builder;
+import net.bytebuddy.implementation.bind.annotation.Super;
 
+import javax.persistence.*;
 import java.util.UUID;
 
+@javax.persistence.Entity
+@Table(name = "customers")
 public class Customer extends Entity {
 
-    private final String firstname;
-    private final String lastname;
-    private final Email email;
-    private final Address address;
-    private final PhoneNumber phoneNumber;
+    @Column(name = "first_name")
+    private String firstname;
+
+    @Column(name = "last_name")
+    private String lastname;
+
+    @OneToOne
+    @JoinColumn(name = "email_id", referencedColumnName = "id")
+    private Email email;
+
+    @OneToOne
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
+    private Address address;
+
+    @OneToOne
+    @JoinColumn(name = "phone_nr", referencedColumnName = "number")
+    private PhoneNumber phoneNumber;
+
+    public Customer() {
+    }
 
     private Customer(CustomerBuilder customerBuilder) {
         super(customerBuilder.id);

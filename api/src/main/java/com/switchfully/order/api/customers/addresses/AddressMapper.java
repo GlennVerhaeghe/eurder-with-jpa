@@ -3,10 +3,11 @@ package com.switchfully.order.api.customers.addresses;
 import com.switchfully.order.domain.customers.addresses.Address;
 import com.switchfully.order.domain.customers.addresses.Address.AddressBuilder;
 import com.switchfully.order.infrastructure.dto.Mapper;
+import org.springframework.stereotype.Component;
 
 import javax.inject.Named;
 
-@Named
+@Component
 public class AddressMapper extends Mapper<AddressDto, Address> {
 
     @Override

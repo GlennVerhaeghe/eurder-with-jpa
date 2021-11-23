@@ -2,12 +2,13 @@ package com.switchfully.order.api.customers.emails;
 
 import com.switchfully.order.domain.customers.emails.Email;
 import com.switchfully.order.infrastructure.dto.Mapper;
+import org.springframework.stereotype.Component;
 
 import javax.inject.Named;
 
 import static com.switchfully.order.domain.customers.emails.Email.EmailBuilder.email;
 
-@Named
+@Component
 public class EmailMapper extends Mapper<EmailDto, Email> {
 
     @Override

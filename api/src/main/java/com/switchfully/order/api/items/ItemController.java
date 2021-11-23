@@ -2,6 +2,7 @@ package com.switchfully.order.api.items;
 
 import com.switchfully.order.domain.items.Item.StockUrgency;
 import com.switchfully.order.service.items.ItemService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class ItemController {
     private final ItemService itemService;
     private final ItemMapper itemMapper;
 
-    @Inject
+    @Autowired
     public ItemController(ItemService itemService, ItemMapper itemMapper) {
         this.itemService = itemService;
         this.itemMapper = itemMapper;

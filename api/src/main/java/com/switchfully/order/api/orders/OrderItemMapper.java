@@ -8,6 +8,8 @@ import com.switchfully.order.domain.orders.orderitems.OrderItem;
 import com.switchfully.order.infrastructure.dto.Mapper;
 import com.switchfully.order.infrastructure.exceptions.EntityNotFoundException;
 import com.switchfully.order.service.items.ItemService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -15,12 +17,12 @@ import java.util.UUID;
 
 import static com.switchfully.order.domain.orders.orderitems.OrderItem.OrderItemBuilder.orderItem;
 
-@Named
+@Component
 public class OrderItemMapper extends Mapper<ItemGroupDto, OrderItem> {
 
-    private ItemService itemService;
+    private final ItemService itemService;
 
-    @Inject
+    @Autowired
     public OrderItemMapper(ItemService itemService) {
         this.itemService = itemService;
     }

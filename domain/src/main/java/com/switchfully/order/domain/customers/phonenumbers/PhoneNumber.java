@@ -2,10 +2,24 @@ package com.switchfully.order.domain.customers.phonenumbers;
 
 import com.switchfully.order.infrastructure.builder.Builder;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "phone_number")
 public final class PhoneNumber {
 
-    private final String number;
-    private final String countryCallingCode;
+    @Id
+    @Column(name = "number")
+    private String number;
+
+    @Column(name = "country_code")
+    private String countryCallingCode;
+
+    public PhoneNumber() {
+    }
 
     private PhoneNumber(PhoneNumberBuilder phoneNumberBuilder) {
         this.number = phoneNumberBuilder.number;

@@ -3,6 +3,7 @@ package com.switchfully.order.api.items;
 import com.switchfully.order.domain.items.Item;
 import com.switchfully.order.domain.items.prices.Price;
 import com.switchfully.order.infrastructure.dto.Mapper;
+import org.springframework.stereotype.Component;
 
 import javax.inject.Named;
 import java.math.BigDecimal;
@@ -10,7 +11,7 @@ import java.util.UUID;
 
 import static com.switchfully.order.domain.items.Item.ItemBuilder.item;
 
-@Named
+@Component
 public class ItemMapper extends Mapper<ItemDto, Item> {
 
     public Item toDomain(UUID itemId, ItemDto itemDto) {

@@ -4,14 +4,28 @@ import com.switchfully.order.domain.Entity;
 import com.switchfully.order.domain.items.prices.Price;
 import com.switchfully.order.infrastructure.builder.Builder;
 
+import javax.persistence.*;
 import java.util.UUID;
 
+@javax.persistence.Entity
+@Table(name = "Item")
 public class Item extends Entity {
 
-    private final String name;
-    private final String description;
-    private final Price price;
+    @Column(name = "name")
+    private String name;
+
+    @Column(name = "description")
+    private String description;
+
+
+    @Embedded
+    @Column(name = "price")
+    private Price price;
+
+    @Column(name = "amount_of_stock")
     private int amountOfStock;
+
+    public Item(){}
 
     public Item(ItemBuilder itemBuilder) {
         super(itemBuilder.id);

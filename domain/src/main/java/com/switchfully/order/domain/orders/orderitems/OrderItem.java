@@ -2,7 +2,9 @@ package com.switchfully.order.domain.orders.orderitems;
 
 import com.switchfully.order.domain.items.prices.Price;
 import com.switchfully.order.infrastructure.builder.Builder;
+import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.LocalDate;
@@ -13,12 +15,27 @@ import java.util.UUID;
  * OrderItem is a fabricated (value) object consisting of the original Item's id and price, enriched with
  * order-specific information (the ordered amount and the shipping date).
  */
+
+@Entity
+@Table(name = "order_item")
 public final class OrderItem {
 
-    private final UUID itemId;
-    private final Price itemPrice;
-    private final int orderedAmount;
-    private final LocalDate shippingDate;
+    @Id
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(generator = "UUID")
+    private UUID itemId;
+
+    @Embedded
+    @Column(name = "price")
+    private Price itemPrice;
+
+    @Column(name = "ordered_amount")
+    private int orderedAmount;
+
+    @Column(name = "shipping_date")
+    private LocalDate shippingDate;
+
+    public OrderItem(){}
 
     public OrderItem(OrderItemBuilder orderItemBuilder, Clock clock) {
         itemId = orderItemBuilder.itemId;

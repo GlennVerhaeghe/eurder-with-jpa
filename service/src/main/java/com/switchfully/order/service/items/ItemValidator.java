@@ -2,6 +2,7 @@ package com.switchfully.order.service.items;
 
 import com.switchfully.order.domain.EntityValidator;
 import com.switchfully.order.domain.items.Item;
+import org.springframework.stereotype.Component;
 
 import javax.inject.Named;
 
@@ -11,7 +12,7 @@ import javax.inject.Named;
  * That way, we can indicate on our Domain classes (such as Customer and Item)
  * what fields are required and what the valid values are for each field.
  */
-@Named
+@Component
 public class ItemValidator extends EntityValidator<Item>{
 
     @Override

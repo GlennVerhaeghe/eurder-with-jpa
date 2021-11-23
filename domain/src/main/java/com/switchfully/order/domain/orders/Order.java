@@ -5,15 +5,32 @@ import com.switchfully.order.domain.items.prices.Price;
 import com.switchfully.order.domain.orders.orderitems.OrderItem;
 import com.switchfully.order.infrastructure.builder.Builder;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+@javax.persistence.Entity
+@Table(name = "orders")
 public class Order extends Entity {
 
-    private final List<OrderItem> orderItems;
-    private final UUID customerId;
+    @Id
+    @SequenceGenerator(name = "order_seq", sequenceName = "ORDER_ID_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_seq")
+    private int id;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "invoice_id")
+    private List<OrderItem> orderItems = new ArrayList<>();
+
+
+    @Column(name = "customer_id")
+    private UUID customerId;
+
+
+    public Order(){}
 
     public Order(OrderBuilder orderBuilder) {
         super(orderBuilder.id);

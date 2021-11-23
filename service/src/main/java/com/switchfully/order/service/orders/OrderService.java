@@ -96,7 +96,7 @@ public class OrderService {
 
     private boolean doAllOrderItemsReferenceAnExistingItem(List<OrderItem> orderItems) {
         return orderItems.stream()
-                .filter(orderItem -> itemRepository.get(orderItem.getItemId()) == null)
+                .filter(orderItem -> !itemRepository.existsById(orderItem.getItemId()))
                 .map(nonExistingItem -> false)
                 .findFirst()
                 .orElse(true);
@@ -110,7 +110,7 @@ public class OrderService {
     }
 
     private boolean doesCustomerExist(Order order) {
-        return customerRepository.get(order.getCustomerId()) != null;
+        return customerRepository.existsById(order.getCustomerId());
     }
 
     private void assertOrderIsValidForCreation(Order order) {
@@ -122,7 +122,7 @@ public class OrderService {
     private List<OrderItem> copyOrderItemsWithRecentPrice(List<OrderItem> orderItems) {
         return orderItems.stream()
                 .map(orderItem -> {
-                            Item item = itemRepository.get(orderItem.getItemId());
+                            Item item = itemRepository.getOne(orderItem.getItemId());
                             return OrderItem.OrderItemBuilder.orderItem()
                                     .withItemId(orderItem.getItemId())
                                     .withOrderedAmount(orderItem.getOrderedAmount())
@@ -146,6 +146,6 @@ public class OrderService {
      * we simply check if the customer exists.
      */
     private boolean doesOrderToReorderBelongToAuthenticatedUser(UUID customerId) {
-        return customerRepository.get(customerId) != null;
+        return customerRepository.existsById(customerId);
     }
 }

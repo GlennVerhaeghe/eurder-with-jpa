@@ -1,16 +1,10 @@
 package com.switchfully.order.domain.items;
 
-import com.switchfully.order.domain.Repository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import javax.inject.Inject;
-import javax.inject.Named;
+import java.util.UUID;
 
-@org.springframework.stereotype.Repository
-public class ItemRepository extends Repository<Item, ItemDatabase> {
-
-    @Autowired
-    public ItemRepository(ItemDatabase database) {
-        super(database);
-    }
+@Repository
+public interface ItemRepository extends JpaRepository<Item, UUID> {
 }

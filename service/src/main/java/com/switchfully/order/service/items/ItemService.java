@@ -36,20 +36,20 @@ public class ItemService {
         if (!itemValidator.isValidForUpdating(item)) {
             itemValidator.throwInvalidStateException(item, "updating");
         }
-        return itemRepository.update(item);
+        return itemRepository.save(item);
     }
 
     public Item getItem(UUID itemId) {
-        return itemRepository.get(itemId);
+        return itemRepository.getOne(itemId);
     }
 
     public void decrementStockForItem(UUID itemId, int amountToDecrement) {
-        Item item = itemRepository.get(itemId);
+        Item item = itemRepository.getOne(itemId);
         item.decrementStock(amountToDecrement);
-        itemRepository.update(item);
+        itemRepository.save(item);
     }
 
     public List<Item> getAllItems() {
-        return new ArrayList<>(itemRepository.getAll().values());
+        return new ArrayList<>(itemRepository.findAll());
     }
 }

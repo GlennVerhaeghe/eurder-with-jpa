@@ -33,10 +33,10 @@ public class CustomerService {
     }
 
     public List<Customer> getAllCustomers() {
-        return new ArrayList<>(customerRepository.getAll().values());
+        return new ArrayList<>(customerRepository.findAll());
     }
 
     public Customer getCustomer(UUID id) {
-        return customerRepository.get(id);
+        return customerRepository.getOne(id);
     }
 }
